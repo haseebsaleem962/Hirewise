@@ -1,15 +1,40 @@
 # Deploying HireWise to Production
 
-**Target architecture** (always-on, $0/month):
+**Target architecture**:
 
-| Component | Host | Why |
-|---|---|---|
-| Frontend (Next.js) | **Vercel** (free) | Zero-config Next.js hosting, global CDN, automatic HTTPS |
-| Backend (Flask + ML) | **Oracle Cloud Always Free** VM | Always-on (no cold starts), persistent disk for the SQLite database and uploaded resumes |
+| Component | Host | Cost | Notes |
+|---|---|---|---|
+| Frontend (Next.js) | **Vercel** (free) | $0 | Zero-config Next.js hosting, global CDN, automatic HTTPS, never sleeps |
+| Backend (Flask + ML) | **Render free tier** | $0 | Deploys from `render.yaml` — see below. Sleeps after 15 min idle (~20s first request) and disk is ephemeral (candidate data resets on each deploy) — fine for demos |
 
-> The backend must be HTTPS because the Vercel frontend runs on HTTPS — browsers block API calls from an HTTPS page to a plain-HTTP backend ("mixed content"). Caddy in the Docker Compose stack handles that automatically with Let's Encrypt.
+> **Upgrade path:** when you need always-on and persistent candidate data, move the backend to Oracle Cloud Always Free (VM + Docker, both prepared in this repo — Dockerfile, docker-compose.yml, Caddyfile) or Railway (~$5/mo). Everything else stays the same; only the backend URL changes on the frontend.
+
+> The backend must be HTTPS because the Vercel frontend runs on HTTPS — browsers block API calls from an HTTPS page to a plain-HTTP backend ("mixed content"). Both Render and Vercel provide HTTPS automatically.
 
 ---
+
+## Quick Start — Backend on Render (~10 min)
+
+1. Sign up at <https://render.com> with **GitHub** (no credit card needed for the free plan).
+2. Dashboard → **New → Blueprint** → select the `haseebsaleem962/Hirewise` repository.
+3. Render reads `render.yaml` from the repo root and creates the `hirewise-backend` web service. It prompts for the three secret values — copy them from your local `backend/.env`:
+   - `SMTP_USER` (your Gmail address)
+   - `SMTP_PASS` (your Gmail App Password)
+   - `SMTP_SENDER` (sender email)
+4. Click **Apply**. First build takes ~5 minutes (pip install + dataset generation + model training).
+5. When it goes live, your backend URL is `https://hirewise-backend.onrender.com` — verify with:
+   `curl https://hirewise-backend.onrender.com/api/health`
+
+**Notes:**
+- Free services sleep after 15 min of inactivity — the first request after a pause takes ~20s.
+- The SQLite database and uploaded resumes are ephemeral on the free plan — they reset on every deploy. For a demo that's fine; don't store real candidate data long-term.
+- Code updates: push to GitHub → Render auto-deploys (the blueprint wires the repo).
+
+---
+
+## Oracle Cloud Always Free (upgrade path — always-on, persistent)
+
+The rest of this document covers the Docker-based VM deployment for when you outgrow the free Render tier.
 
 ## Part 1 — Oracle Cloud VM (one-time, ~15 min)
 
@@ -111,13 +136,16 @@ The database (`docker-data/instance/`) and uploaded resumes (`docker-data/upload
 
 ## Part 3 — Frontend (Vercel)
 
+Works the same regardless of where the backend lives — just point it at the right URL:
+
 ```bash
 cd frontend
 
 # Set the production API URL (baked in at build time by Next.js)
 # via dashboard: Settings → Environment Variables, or CLI:
 vercel env add NEXT_PUBLIC_API_URL production
-# value: https://<your-domain>/api
+# value: https://hirewise-backend.onrender.com/api   (Render)
+#   or:  https://<your-domain>/api                    (Oracle VM)
 
 npm run build          # sanity-check the production build
 vercel --prod
