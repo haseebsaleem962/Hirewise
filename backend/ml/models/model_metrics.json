@@ -1,0 +1,312 @@
+{
+  "best_model": "Logistic Regression",
+  "all_results": {
+    "Logistic Regression": {
+      "val_accuracy": 100.0,
+      "val_f1": 100.0,
+      "test_accuracy": 100.0,
+      "test_precision": 100.0,
+      "test_recall": 100.0,
+      "test_f1": 100.0
+    },
+    "Naive Bayes": {
+      "val_accuracy": 100.0,
+      "val_f1": 100.0,
+      "test_accuracy": 100.0,
+      "test_precision": 100.0,
+      "test_recall": 100.0,
+      "test_f1": 100.0
+    },
+    "Random Forest": {
+      "val_accuracy": 100.0,
+      "val_f1": 100.0,
+      "test_accuracy": 100.0,
+      "test_precision": 100.0,
+      "test_recall": 100.0,
+      "test_f1": 100.0
+    },
+    "SVM": {
+      "val_accuracy": 100.0,
+      "val_f1": 100.0,
+      "test_accuracy": 100.0,
+      "test_precision": 100.0,
+      "test_recall": 100.0,
+      "test_f1": 100.0
+    }
+  },
+  "classification_report": {
+    "Android Development": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 12.0
+    },
+    "Cybersecurity": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 12.0
+    },
+    "Data Science": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 12.0
+    },
+    "Database Administration": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 12.0
+    },
+    "DevOps": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 12.0
+    },
+    "Finance": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 12.0
+    },
+    "HR": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 12.0
+    },
+    "Java Development": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 12.0
+    },
+    "Machine Learning": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 12.0
+    },
+    "Python Development": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 12.0
+    },
+    "Software Engineering": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 12.0
+    },
+    "Web Development": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 12.0
+    },
+    "accuracy": 1.0,
+    "macro avg": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 144.0
+    },
+    "weighted avg": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 144.0
+    }
+  },
+  "confusion_matrix": [
+    [
+      12,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      12,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      12,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      12,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      12,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      12,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      12,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      12,
+      0,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      12,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      12,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      12,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      12
+    ]
+  ],
+  "categories": [
+    "Android Development",
+    "Cybersecurity",
+    "Data Science",
+    "Database Administration",
+    "DevOps",
+    "Finance",
+    "HR",
+    "Java Development",
+    "Machine Learning",
+    "Python Development",
+    "Software Engineering",
+    "Web Development"
+  ],
+  "train_samples": 672,
+  "val_samples": 144,
+  "test_samples": 144,
+  "total_samples": 960
+}

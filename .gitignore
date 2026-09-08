@@ -1,0 +1,75 @@
+# =============================================================
+# HireWise — root .gitignore
+# Protects secrets, candidate PII and regenerable artifacts
+# from ever being committed.
+# =============================================================
+
+# ===== Secrets & credentials =====
+# Real SMTP credentials / secret key live here — never commit
+.env
+.env.*
+!.env.example
+.env.local
+.env.*.local
+*.pem
+*.key
+credentials.json
+service-account*.json
+
+# ===== Database & candidate data (PII) =====
+# SQLite database holds candidate names, emails, phones, resume text
+backend/instance/
+*.db
+*.db-journal
+*.sqlite
+*.sqlite3
+# Uploaded resume files contain personal data
+backend/uploads/
+
+# ===== Python =====
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.eggs/
+.venv/
+venv/
+env/
+ENV/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+dist/
+build/
+
+# ===== ML artifacts (regenerable via `python train_model.py`) =====
+backend/ml/models/*.pkl
+backend/ml/models/*.joblib
+backend/data/*.csv
+
+# ===== Node / Next.js =====
+node_modules/
+.next/
+out/
+*.tsbuildinfo
+next-env.d.ts
+.vercel
+
+# ===== Logs =====
+*.log
+logs/
+
+# ===== OS / editor =====
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# ===== App screenshots (contain real candidate data) =====
+screenshot_*.png
+*_screenshot.png

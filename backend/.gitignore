@@ -1,0 +1,44 @@
+# =============================================================
+# HireWise backend — .gitignore
+# Protects secrets, candidate PII and regenerable artifacts.
+# =============================================================
+
+# ===== Secrets & credentials =====
+# Real SMTP credentials / secret key live here — never commit
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# ===== Database & candidate data (PII) =====
+instance/
+uploads/
+*.db
+*.db-journal
+*.sqlite
+*.sqlite3
+
+# ===== Python =====
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+dist/
+build/
+
+# ===== ML artifacts (regenerable via `python train_model.py`) =====
+ml/models/*.pkl
+ml/models/*.joblib
+data/*.csv
+
+# ===== Logs =====
+*.log
+logs/
