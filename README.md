@@ -8,6 +8,14 @@
 
 HireWise is a full-stack recruitment tool that screens, classifies, ranks and shortlists candidates using machine learning — with a built-in **blind hiring mode** to reduce unconscious bias and automated **email notifications** for every decision.
 
+## Live Demo
+
+- **Web app:** [https://frontend-livid-seven-0uchj9ri26.vercel.app](https://frontend-livid-seven-0uchj9ri26.vercel.app)
+- **API base:** [https://hirewise-backend-3ind.onrender.com/api](https://hirewise-backend-3ind.onrender.com/api)
+- **Health check:** [https://hirewise-backend-3ind.onrender.com/api/health](https://hirewise-backend-3ind.onrender.com/api/health)
+
+> The backend runs on Render's free tier: it sleeps after ~15 minutes of inactivity (the first request after a pause can take 30–60 s to wake), and demo data lives on ephemeral disk that resets on every backend deploy. For anything you want to keep, use the local setup below.
+
 ---
 
 ## The Problem
@@ -192,6 +200,13 @@ HireWise/
 └── .gitignore                  # Secrets / PII / artifacts protection
 ```
 
+## Deployment
+
+Two production paths are documented step by step in [DEPLOYMENT.md](DEPLOYMENT.md):
+
+- **Render (free tier)** — what the live demo above runs: a `render.yaml` blueprint, gunicorn behind a health-checked web service, and the ML model rebuilt on every deploy. Free instances sleep when idle and use ephemeral disk.
+- **Oracle Cloud VM + Docker** — always-on alternative with persistent volumes for the SQLite database and uploads, automatic HTTPS via Caddy, started with `docker compose up`.
+
 ## Security & Privacy
 
 - **Secrets never enter the repo** — `backend/.env` (SMTP credentials, secret key), the SQLite database, uploaded resumes and app screenshots (which contain real candidate data) are all gitignored. `backend/.env.example` is the committable template.
@@ -202,14 +217,13 @@ HireWise/
 ## Known Limitations
 
 - The bundled model was trained on a **generated dataset** (960 synthetic resumes). The reported 100% accuracy reflects the distinct skill vocabularies of the synthetic categories, not real-world performance — retrain with labeled real resumes before production use.
-- SQLite + Flask dev server make this a **single-recruiter, local tool** by design; multi-user auth and a production WSGI server are deployment work, not feature gaps.
+- SQLite makes this a **single-recruiter tool** by design — multi-user auth is the main missing feature; production serving (gunicorn, Render, Docker) is already covered in [DEPLOYMENT.md](DEPLOYMENT.md).
 - Contact extraction is heuristic-based; the reparse tooling and manual email editing exist precisely to correct edge cases.
 
 ## Roadmap
 
 - Authentication & multi-recruiter workspaces
 - Retraining on real labeled data + embedding-based semantic matching (e.g., sentence transformers)
-- Dockerized one-command deployment
 - Email scheduling and a template gallery
 - Duplicate/Resume-version detection
 - CSV/ATS export of shortlists
