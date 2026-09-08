@@ -1,0 +1,38 @@
+# HireWise backend — production deployment (Oracle Cloud Always Free VM)
+#   Start:   docker compose up -d --build
+#   Logs:    docker compose logs -f backend
+#   Update:  git pull && docker compose up -d --build
+#
+# Caddy terminates HTTPS with an automatically renewed Let's Encrypt
+# certificate and proxies to gunicorn in the backend container.
+services:
+  backend:
+    build: .
+    container_name: hirewise-backend
+    restart: unless-stopped
+    env_file: .env
+    expose:
+      - "5000"
+    volumes:
+      # Candidate database + uploaded resumes survive redeploys
+      - ./docker-data/instance:/app/instance
+      - ./docker-data/uploads:/app/uploads
+
+  caddy:
+    image: caddy:2-alpine
+    container_name: hirewise-caddy
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"   # HTTP/3
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - backend
+
+volumes:
+  caddy_data:
+  caddy_config:

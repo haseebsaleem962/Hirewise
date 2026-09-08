@@ -1,0 +1,12 @@
+# Replace hirewise.duckdns.org with your DuckDNS subdomain
+# (or your own domain). Caddy automatically obtains and renews
+# a Let's Encrypt certificate — no certbot needed.
+hirewise.duckdns.org {
+	# HireWise Flask API (gunicorn inside the backend container)
+	reverse_proxy backend:5000
+
+	# Allow large resume batch uploads (backend allows 200MB)
+	request_body {
+		max_size 220MB
+	}
+}

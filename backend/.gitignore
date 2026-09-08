@@ -42,3 +42,6 @@ data/*.csv
 # ===== Logs =====
 *.log
 logs/
+
+# ===== Docker runtime data =====
+docker-data/
