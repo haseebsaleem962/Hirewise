@@ -71,7 +71,7 @@ export default function CandidatesPage() {
           <option value="">All Positions</option>
           {criteriaList.map((c) => <option key={c.id} value={c.id}>{c.role_title}</option>)}
         </select>
-        <div className="flex gap-1">
+        <div className="flex gap-1 flex-wrap">
           {filters.map((s) => (
             <button key={s} onClick={() => setFilter(s)}
               className={`px-3 py-[7px] rounded-[var(--radius-btn)] text-[10px] font-bold transition-all ${

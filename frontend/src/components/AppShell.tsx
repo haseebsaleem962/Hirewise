@@ -1,18 +1,21 @@
 'use client';
 
+import { useState } from 'react';
 import { BlindModeProvider } from '@/context/BlindModeContext';
 import { Toaster } from 'react-hot-toast';
 import Sidebar from '@/components/Sidebar';
 import Navbar from '@/components/Navbar';
 
 export default function AppShell({ children }: { children: React.ReactNode }) {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
   return (
     <BlindModeProvider>
       <div className="flex h-screen overflow-hidden bg-[var(--color-bg)]">
-        <Sidebar />
+        <Sidebar open={sidebarOpen} onClose={() => setSidebarOpen(false)} />
         <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
-          <Navbar />
-          <main className="flex-1 overflow-y-auto px-6 py-6 lg:px-8 lg:py-8">
+          <Navbar onMenuClick={() => setSidebarOpen(true)} />
+          <main className="flex-1 overflow-y-auto px-4 py-4 sm:px-6 sm:py-6 lg:px-8 lg:py-8">
             {children}
           </main>
         </div>

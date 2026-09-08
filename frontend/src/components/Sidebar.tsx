@@ -2,7 +2,8 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LayoutGrid, Upload, Users, Mail, BarChart3, Sparkles } from 'lucide-react';
+import { useEffect } from 'react';
+import { LayoutGrid, Upload, Users, Mail, BarChart3, Sparkles, X } from 'lucide-react';
 
 const navItems = [
   { href: '/dashboard', label: 'Dashboard', icon: LayoutGrid },
@@ -12,11 +13,14 @@ const navItems = [
   { href: '/reports', label: 'Analytics', icon: BarChart3 },
 ];
 
-export default function Sidebar() {
-  const pathname = usePathname();
+interface SidebarProps {
+  open: boolean;
+  onClose: () => void;
+}
 
+function SidebarContent({ pathname, onNavigate }: { pathname: string; onNavigate?: () => void }) {
   return (
-    <aside className="w-[250px] bg-[var(--color-sidebar)] flex flex-col h-screen shrink-0 select-none">
+    <>
       {/* Brand */}
       <div className="px-5 pt-6 pb-5">
         <div className="flex items-center gap-3">
@@ -34,7 +38,7 @@ export default function Sidebar() {
       <div className="mx-5 h-px bg-white/[0.06]" />
 
       {/* Navigation */}
-      <nav className="flex-1 px-3 py-4 space-y-1">
+      <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
         <p className="px-3 pb-2 text-[9.5px] font-bold tracking-[0.15em] text-slate-600 uppercase">Menu</p>
         {navItems.map((item) => {
           const active = pathname === item.href || pathname.startsWith(item.href + '/');
@@ -42,6 +46,7 @@ export default function Sidebar() {
             <Link
               key={item.href}
               href={item.href}
+              onClick={onNavigate}
               className={`group relative flex items-center gap-3 px-3 py-[9px] rounded-[10px] text-[13px] font-medium transition-all duration-200 ${
                 active
                   ? 'bg-[var(--color-sidebar-active)] text-white'
@@ -70,6 +75,50 @@ export default function Sidebar() {
           </div>
         </div>
       </div>
-    </aside>
+    </>
+  );
+}
+
+export default function Sidebar({ open, onClose }: SidebarProps) {
+  const pathname = usePathname();
+
+  // Close the mobile drawer with the Escape key
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [open, onClose]);
+
+  return (
+    <>
+      {/* Backdrop — mobile drawer only */}
+      {open && (
+        <div className="fixed inset-0 z-40 bg-black/50 lg:hidden" onClick={onClose} aria-hidden="true" />
+      )}
+
+      {/* Desktop sidebar */}
+      <aside className="hidden lg:flex w-[250px] bg-[var(--color-sidebar)] flex-col h-screen shrink-0 select-none">
+        <SidebarContent pathname={pathname} />
+      </aside>
+
+      {/* Mobile drawer — slides over the content until the lg breakpoint */}
+      <aside
+        className={`fixed inset-y-0 left-0 z-50 w-[250px] max-w-[85vw] bg-[var(--color-sidebar)] flex flex-col h-full select-none shadow-2xl transition-[transform,visibility] duration-300 ease-out lg:hidden ${
+          open ? 'visible translate-x-0' : 'invisible -translate-x-full'
+        }`}
+      >
+        <button
+          onClick={onClose}
+          className="absolute top-5 right-3 w-8 h-8 flex items-center justify-center rounded-lg text-slate-400 hover:text-slate-200 hover:bg-white/[0.06] transition-colors"
+          aria-label="Close menu"
+        >
+          <X size={16} />
+        </button>
+        <SidebarContent pathname={pathname} onNavigate={onClose} />
+      </aside>
+    </>
   );
 }
