@@ -20,4 +20,6 @@ RUN python train_model.py
 EXPOSE 5000
 
 # Production WSGI server (dev server with debug=True is local-only)
-CMD ["gunicorn", "--bind", "0.0.0.0:5000", "--workers", "2", "--threads", "4", "--timeout", "120", "app:create_app()"]
+# wsgi:app (backend/wsgi.py) — same factory as `python app.py`, but avoids
+# parentheses in the command line for shell-safety on any host
+CMD ["gunicorn", "--bind", "0.0.0.0:5000", "--workers", "2", "--threads", "4", "--timeout", "120", "wsgi:app"]

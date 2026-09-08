@@ -16,7 +16,10 @@ services:
 
     # Render injects $PORT — bind to it. Single worker + threads keeps
     # memory within the free tier's 512 MB (sklearn import is heavy).
-    startCommand: gunicorn --bind 0.0.0.0:$PORT --workers 1 --threads 4 --timeout 120 app:create_app()
+    # Serves via wsgi:app (backend/wsgi.py) — plain word, no parentheses:
+    # Render runs this through `bash -c`, where an unquoted app:create_app()
+    # is parsed as a shell function definition and fails with a syntax error.
+    startCommand: gunicorn --bind 0.0.0.0:$PORT --workers 1 --threads 4 --timeout 120 wsgi:app
 
     healthCheckPath: /api/health
 
